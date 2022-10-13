@@ -1,9 +1,10 @@
 package com.example.backend.controller;
 
+import com.example.backend.model.CreateUserDto;
+import com.example.backend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,12 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("api/user")
 public class UserController {
 
+    private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/login")
     public String login(){
@@ -26,6 +33,15 @@ public class UserController {
     public void logout(HttpSession session){
 
         session.invalidate();
+    }
+
+
+    @PostMapping("/register")
+    public String register(@RequestBody CreateUserDto createUserDto){
+
+        String username = userService.register(createUserDto);
+
+        return username;
     }
 
 }

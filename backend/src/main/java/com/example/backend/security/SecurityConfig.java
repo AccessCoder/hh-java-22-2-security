@@ -30,8 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/hello").authenticated() // Für eingeloggten sichtbar
                 .antMatchers("/api/ciao").authenticated() // Für eingeloggten sichtbar
                 .antMatchers("/api/user/login").permitAll() // Für alle
+                .antMatchers("/api/user/register").permitAll() // Für alle
                 .antMatchers("/admin/*").hasRole("admin") // Nur für Nutzer der Rolle "admin" sichtbar
-                .and().httpBasic();
+                .and().httpBasic().and().csrf().disable();
     }
 
     @Override
