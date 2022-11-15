@@ -14,30 +14,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CiaoControllerTest {
+public class HelloControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
     void shouldReturn_Unauthorized_When_RequestWithoutLogin() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/ciao"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hello"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser(username = "admin1", password = "pwd", authorities = {"ADMIN"})
-    void shouldReturn_Ciao_When_RequestWithAdminLogin() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/ciao"))
+    @WithMockUser(username = "user1", password = "pwd")
+    void shouldReturn_Hello_When_RequestWithLogin() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/hello/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Ciao!"));
-    }
-
-    @Test
-    @WithMockUser(username = "user1", password = "pwd", authorities = {"USER"})
-    void shouldReturn_Forbidden_When_RequestWithUserLogin() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/ciao"))
-                .andExpect(status().isForbidden());
+                .andExpect(content().string("Hello!"));
     }
 
 }
