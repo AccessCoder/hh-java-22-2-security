@@ -28,10 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests() // wir wollen Regeln festlegen für authorisierte Requests antmatchers=neue Regel für bestimme url!
                 .antMatchers("/api/hello").authenticated() // Für eingeloggten sichtbar
-                .antMatchers("/api/ciao").authenticated() // Für eingeloggten sichtbar
+                .antMatchers("/api/ciao").hasAnyAuthority("ADMIN") // Für Admins sichtbar
                 .antMatchers("/api/user/login").permitAll() // Für alle
                 .antMatchers("/api/user/register").permitAll() // Für alle
-                .antMatchers("/admin/*").hasRole("admin") // Nur für Nutzer der Rolle "admin" sichtbar
+                .antMatchers("/admin/*").hasRole("ADMIN") // Nur für Nutzer der Rolle "admin" sichtbar
+                .anyRequest().authenticated()
                 .and().httpBasic().and().csrf().disable();
     }
 
